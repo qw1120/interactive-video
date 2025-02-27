@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>互动影像播放器</title>
+    <style>
+        /* 全屏黑色背景 */
+        body {
+            margin: 0;
+            background: black;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 视频容器样式 */
+        #videoContainer {
+            max-width: 90%;
+            position: relative;
+        }
+        /* 引导提示层 */
+        #overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+<div id="videoContainer">
+    <div id="overlay">点击屏幕开始播放</div>
+    <video id="myVideo" controls playsinline>
+        <source src="src/12345.mp4" type="video/mp4">
+    </video>
+</div>
+
+<script>
+    // 兼容iOS自动播放策略
+    document.addEventListener('touchstart', function init() {
+        const video = document.getElementById('myVideo');
+
+        // 设置最大音量（需用户交互触发）
+        video.volume = 1;
+
+        // 启动播放
+        video.play().catch(error => {
+            console.log('自动播放被阻止:', error);
+        });
+
+        // 隐藏引导提示
+        document.getElementById('overlay').style.display = 'none';
+
+        // 移除事件监听器
+        document.removeEventListener('touchstart', init);
+    });
+</script>
+</body>
+</html>
